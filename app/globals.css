@@ -1,26 +1,126 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #09090b;
+  --foreground: #fafafa;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Dot-grid background */
+.bg-dot-grid {
+  background-image: radial-gradient(circle, #3f3f4680 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Animated gradient text */
+.gradient-text {
+  color: #a78bfa; /* fallback if background-clip unsupported */
+  background: linear-gradient(135deg, #a78bfa, #7c3aed, #c084fc, #818cf8);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* Fade-up entrance */
+.animate-fade-up {
+  animation: fade-up 0.4s ease both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Blinking cursor after streaming text */
+.cursor-blink::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #a78bfa;
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Shimmer loading bar */
+.shimmer {
+  background: linear-gradient(90deg, #27272a 25%, #3f3f46 50%, #27272a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* Glow ring on focus/active */
+.glow-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #09090b, 0 0 0 4px #7c3aed;
+}
+
+/* Glass card */
+.glass {
+  background: rgba(24, 24, 27, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Step connector line */
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #3f3f46, #3f3f46);
+  transition: background 0.5s ease;
+}
+.step-line.active {
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+}
+
+/* Reduced-motion: suppress all custom animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .gradient-text,
+  .shimmer {
+    animation: none;
+  }
+  .cursor-blink::after {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Prose overrides for dark theme */
+.dark-prose {
+  --tw-prose-body: #d4d4d8;
+  --tw-prose-headings: #fafafa;
+  --tw-prose-links: #a78bfa;
+  --tw-prose-bold: #fafafa;
+  --tw-prose-code: #c084fc;
+  --tw-prose-pre-bg: #18181b;
+  --tw-prose-bullets: #71717a;
+  --tw-prose-hr: #3f3f46;
+  --tw-prose-th-borders: #3f3f46;
+  --tw-prose-td-borders: #27272a;
 }
